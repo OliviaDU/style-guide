@@ -493,3 +493,286 @@
 
 **[⬆ 返回目录](#table-of-contents)**
 
+<a name="arrow-functions"></a>
+## 箭头函数
+
+  - 当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。
+
+  > 为什么?因为箭头函数创造了新的一个 `this` 执行环境，通常情况下都能满足你的需求，而且这样的写法更为简洁。
+
+  > 为什么不？如果你有一个相当复杂的函数，你或许可以把逻辑部分转移到一个函数声明上。
+
+  ```javascript
+    // bad
+    [1, 2, 3].map(function (x) {
+      return x * x;
+    });
+
+    // good
+    [1, 2, 3].map((x) => {
+      return x * x;
+    });
+  ```
+
+  - 如果一个函数适合用一行写出并且只有一个参数，那就把花括号、圆括号和 `return` 都省略掉。如果不是，那就不要省略。
+
+  > 语法糖。在链式调用中可读性很高。
+
+  > 为什么不？当你打算回传一个对象的时候。
+
+  ```javascript
+    // good
+    [1, 2, 3].map(x => x * x);
+
+    // good
+    [1, 2, 3].reduce((total, n) => {
+      return total + n;
+    }, 0);
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="constructors"></a>
+## 构造函数
+
+  - 总是使用 `class`。避免直接操作 `prototype` 。
+
+  > 为什么? 因为 `class` 语法更为简洁更易读。
+
+  ```javascript
+    // bad
+    function Queue(contents = []) {
+      this._queue = [...contents];
+    }
+
+    Queue.prototype.pop = function() {
+      const value = this._queue[0];
+      this._queue.splice(0, 1);
+      return value;
+    }
+
+
+    // good
+    class Queue {
+      constructor(contents = []) {
+        this._queue = [...contents];
+      }
+
+      pop() {
+        const value = this._queue[0];
+        this._queue.splice(0, 1);
+        return value;
+      }
+    }
+  ```
+
+
+  - 方法可以返回 `this` 来帮助链式调用。
+
+  ```javascript
+    // bad
+    Jedi.prototype.jump = function() {
+      this.jumping = true;
+      return true;
+    };
+
+    Jedi.prototype.setHeight = function(height) {
+      this.height = height;
+    };
+
+    const luke = new Jedi();
+    luke.jump(); // => true
+    luke.setHeight(20); // => undefined
+
+    // good
+    class Jedi {
+      jump() {
+        this.jumping = true;
+        return this;
+      }
+
+      setHeight(height) {
+        this.height = height;
+        return this;
+      }
+    }
+
+    const luke = new Jedi();
+
+    luke.jump()
+      .setHeight(20);
+  ```
+
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="modules"></a>
+## 模块
+
+  - 总是使用模组 (`import`/`export`) 而不是其他非标准模块系统。你可以编译为你喜欢的模块系统。
+
+  > 模块就是未来!
+
+  ```javascript
+    // bad
+    const MaoyanStyleGuide = require('./MaoyanStyleGuide');
+    module.exports = MaoyanStyleGuide.es6;
+
+    // ok
+    import MaoyanStyleGuide from './MaoyanStyleGuide';
+    export default MaoyanStyleGuide.es6;
+
+    // best
+    import { es6 } from './MaoyanStyleGuide';
+    export default es6;
+  ```
+
+  - 不要使用通配符 import。
+
+  > 这样能确保你只有一个默认 export。
+
+  ```javascript
+    // bad
+    import * as MaoyanStyleGuide from './MaoyanStyleGuide';
+
+    // good
+    import MaoyanStyleGuide from './MaoyanStyleGuide';
+  ```
+
+  - 不要从 import 中直接 export。
+
+  > 虽然一行代码简洁明了，但让 import 和 export 各司其职让事情能保持一致。
+
+  ```javascript
+    // bad
+    // filename es6.js
+    export { es6 as default } from './MaoyanStyleGuide';
+
+    // good
+    // filename es6.js
+    import { es6 } from './MaoyanStyleGuide';
+    export default es6;
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="iterators-and-generators"></a>
+## 迭代器
+
+  - 不要使用 iterators。使用高阶函数例如 `map()` 和 `reduce()` 替代 `for-of`。
+
+  > 为什么？这加强了我们不变的规则。处理纯函数的回调值更易读，这比它带来的副作用更重要。
+
+  ```javascript
+    const numbers = [1, 2, 3, 4, 5];
+
+    // bad
+    let sum = 0;
+    for (let num of numbers) {
+      sum += num;
+    }
+
+    sum === 15;
+
+    // good
+    let sum = 0;
+    numbers.forEach((num) => sum += num);
+    sum === 15;
+
+    // best (use the functional force)
+    const sum = numbers.reduce((total, num) => total + num, 0);
+    sum === 15;
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="properties"></a>
+## 属性
+
+  - 使用 `.` 来访问对象的属性。
+
+  ```javascript
+    const luke = {
+      jedi: true,
+      age: 28,
+    };
+
+    // bad
+    const isJedi = luke['jedi'];
+
+    // good
+    const isJedi = luke.jedi;
+  ```
+
+  - 当通过变量访问属性时使用中括号 `[]`。
+
+  ```javascript
+    const luke = {
+      jedi: true,
+      age: 28,
+    };
+
+    function getProp(prop) {
+      return luke[prop];
+    }
+
+    const isJedi = getProp('jedi');
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="variables"></a>
+## 变量
+
+  - 一直使用 `const` 来声明变量，如果不这样做就会产生全局变量。我们需要避免全局命名空间的污染。
+
+  ```javascript
+    // bad
+    superPower = new SuperPower();
+
+    // good
+    const superPower = new SuperPower();
+  ```
+
+  - 使用 `const` 声明每一个变量。
+
+  > 增加新变量将变的更加容易，而且你永远不用再担心调换错 `;` 跟 `,`。
+
+  ```javascript
+    // bad
+    const items = getItems(),
+        goSportsTeam = true,
+        dragonball = 'z';
+
+    // good
+    const items = getItems();
+    const goSportsTeam = true;
+    const dragonball = 'z';
+  ```
+
+  - 将所有的 `const` 和 `let` 分组
+
+  > 当你需要把已赋值变量赋值给未赋值变量时非常有用。
+
+  ```javascript
+    // bad
+    let i, len, dragonball,
+        items = getItems(),
+        goSportsTeam = true;
+
+    // bad
+    let i;
+    const items = getItems();
+    let dragonball;
+    const goSportsTeam = true;
+    let len;
+
+    // good
+    const goSportsTeam = true;
+    const items = getItems();
+    let dragonball;
+    let i;
+    let length;
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
