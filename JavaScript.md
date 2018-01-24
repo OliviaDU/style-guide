@@ -86,7 +86,7 @@
   const item = {};
   ```
 
-  - 如果你的代码在浏览器环境下执行，别使用 [保留字](http://es5.github.io/#x7.6.1) 作为键值。这样的话在 IE8 不会运行。 [更多信息](https://github.com/airbnb/javascript/issues/61)。 但在 ES6 模块和服务器端中使用没有问题。
+  - 如果你的代码在浏览器环境下执行，别使用 [保留字](http://es5.github.io/#x7.6.1) 作为键值。这样的话在 IE8 不会运行。但在 ES6 模块和服务器端中使用没有问题。
 
   ```javascript
   // bad
@@ -155,7 +155,7 @@
 
     addValue: function (value) {
       return atom.value + value;
-    },
+    }
   };
 
   // good
@@ -164,7 +164,7 @@
 
     addValue(value) {
       return atom.value + value;
-    },
+    }
   };
 ```
 
@@ -174,16 +174,16 @@
   > 这样更短更有描述性。
 
   ```javascript
-    const lukeSkywalker = 'Luke Skywalker';
+    const job = 'FE';
 
     // bad
     const obj = {
-      lukeSkywalker: lukeSkywalker,
+      job: job
     };
 
     // good
     const obj = {
-      lukeSkywalker,
+      job
     };
   ```
 
@@ -192,28 +192,304 @@
   > 这样能清楚地看出哪些属性使用了简写。
 
   ```javascript
-  const anakinSkywalker = 'Anakin Skywalker';
-  const lukeSkywalker = 'Luke Skywalker';
+  const job = 'FE';
+  const company = 'maoyan';
 
   // bad
   const obj = {
-    episodeOne: 1,
-    twoJedisWalkIntoACantina: 2,
-    lukeSkywalker,
-    episodeThree: 3,
-    mayTheFourth: 4,
-    anakinSkywalker,
+    age: 22,
+    company,
+    sex: 'female',
+    job
   };
 
   // good
   const obj = {
-    lukeSkywalker,
-    anakinSkywalker,
-    episodeOne: 1,
-    twoJedisWalkIntoACantina: 2,
-    episodeThree: 3,
-    mayTheFourth: 4,
+    company,
+    job,
+    age: 22,
+    sex: 'female'
   };
   ```
 
 **[⬆ 返回目录](#table-of-contents)**
+
+
+<a name="arrays"></a>
+## 数组
+
+  - 使用字面值创建数组。
+
+  ```javascript
+  // bad
+  const items = new Array();
+
+  // good
+  const items = [];
+  ```
+
+  - 使用拓展运算符 `...` 复制数组。
+
+  ```javascript
+  // bad
+  const len = items.length;
+  const itemsCopy = [];
+  let i;
+
+  for (i = 0; i < len; i++) {
+    itemsCopy[i] = items[i];
+  }
+
+  // good
+  const itemsCopy = [...items];
+  ```
+  - 使用 Array.from 把一个类数组对象转换成数组。
+  ```javascript
+
+  const foo = document.querySelectorAll('.foo');
+  const nodes = Array.from(foo);
+
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="destructuring"></a>
+## 解构赋值
+
+  - 使用解构存取和使用多属性对象。
+
+  > 解构能减少临时引用属性。
+
+  ```javascript
+    // bad
+    function getFullName(user) {
+      const firstName = user.firstName;
+      const lastName = user.lastName;
+
+      return `${firstName} ${lastName}`;
+    }
+
+    // good
+    function getFullName(obj) {
+      const { firstName, lastName } = obj;
+      return `${firstName} ${lastName}`;
+    }
+
+    // best
+    function getFullName({ firstName, lastName }) {
+      return `${firstName} ${lastName}`;
+    }
+  ```
+
+  - 对数组使用解构赋值。
+
+  ```javascript
+    const arr = [1, 2, 3, 4];
+
+    // bad
+    const first = arr[0];
+    const second = arr[1];
+
+    // good
+    const [first, second] = arr;
+  ```
+
+  - 需要回传多个值时，使用对象解构，而不是数组解构。
+  > 增加属性或者改变排序不会改变调用时的位置。
+
+  ```javascript
+    // bad
+    function processInput(input) {
+      // then a miracle occurs
+      return [left, right, top, bottom];
+    }
+
+    // 调用时需要考虑回调数据的顺序。
+    const [left, __, top] = processInput(input);
+
+    // good
+    function processInput(input) {
+      // then a miracle occurs
+      return { left, right, top, bottom };
+    }
+
+    // 调用时只选择需要的数据
+    const { left, right } = processInput(input);
+  ```
+
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="strings"></a>
+## 字符串
+
+  - 字符串使用单引号 `''` 。
+
+    ```javascript
+    // bad
+    const name = "Capt. Janeway";
+
+    // good
+    const name = 'Capt. Janeway';
+    ```
+
+  - 字符串超过 80 个字节应该使用字符串连接号换行。
+  - 注：过度使用字串连接符号可能会对性能造成影响。
+
+    ```javascript
+    // bad
+    const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
+
+    // bad
+    const errorMessage = 'This is a super long error that was thrown because \
+    of Batman. When you stop to think about how Batman had anything to do \
+    with this, you would get nowhere \
+    fast.';
+
+    // good
+    const errorMessage = 'This is a super long error that was thrown because ' +
+      'of Batman. When you stop to think about how Batman had anything to do ' +
+      'with this, you would get nowhere fast.';
+    ```
+
+  - 程序化生成字符串时，使用模板字符串代替字符串连接。
+
+  > 模板字符串更为简洁，更具可读性。
+
+  ```javascript
+    // bad
+    function sayHi(name) {
+      return 'How are you, ' + name + '?';
+    }
+
+    // bad
+    function sayHi(name) {
+      return ['How are you, ', name, '?'].join();
+    }
+
+    // good
+    function sayHi(name) {
+      return `How are you, ${name}?`;
+    }
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="functions"></a>
+## 函数
+
+  - 使用函数声明代替函数表达式。
+
+  > 因为函数声明是可命名的，所以他们在调用栈中更容易被识别。此外，函数声明会把整个函数提升（hoisted），而函数表达式只会把函数的引用变量名提升。这条规则使得[箭头函数](#arrow-functions)可以取代函数表达式。
+
+  ```javascript
+    // bad
+    const foo = function () {
+    };
+
+    // good
+    function foo() {
+    }
+  ```
+
+  - 函数表达式:
+
+  ```javascript
+    // 立即调用的函数表达式 (IIFE)
+    (() => {
+      console.log('Welcome to the Internet. Please follow me.');
+    })();
+  ```
+
+  - 永远不要在一个非函数代码块（`if`、`while` 等）中声明一个函数，把那个函数赋给一个变量。
+
+  ```javascript
+    // bad
+    if (currentUser) {
+      function test() {
+        console.log('Nope.');
+      }
+    }
+
+    // good
+    let test;
+    if (currentUser) {
+      test = () => {
+        console.log('Yup.');
+      };
+    }
+  ```
+
+  - 永远不要把参数命名为 `arguments`。这将取代原来函数作用域内的 `arguments` 对象。
+
+  ```javascript
+    // bad
+    function nope(name, options, arguments) {
+      // ...stuff...
+    }
+
+    // good
+    function yup(name, options, args) {
+      // ...stuff...
+    }
+  ```
+
+  <a name="es6-rest"></a>
+  - 不要使用 `arguments`。可以选择 rest 语法 `...` 替代。
+
+  > 使用 `...` 能明确你要传入的参数。另外 rest 参数是一个真正的数组，而 `arguments` 是一个类数组。
+
+  ```javascript
+    // bad
+    function concatenateAll() {
+      const args = Array.prototype.slice.call(arguments);
+      return args.join('');
+    }
+
+    // good
+    function concatenateAll(...args) {
+      return args.join('');
+    }
+  ```
+
+  - 直接给函数的参数指定默认值，不要使用一个变化的函数参数。
+
+  ```javascript
+    // really bad
+    function handleThings(opts) {
+      // 如果参数 opts 是 false 的话，它就会被设定为一个对象。
+      opts = opts || {};
+    }
+
+    // still bad
+    function handleThings(opts) {
+      if (opts === void 0) {
+        opts = {};
+      }
+    }
+
+    // good
+    function handleThings(opts = {}) {
+      // ...
+    }
+  ```
+
+  - 直接给函数参数赋值时需要避免副作用。
+
+  > 因为这样的写法让人感到很困惑。
+
+  ```javascript
+  var b = 1;
+  // bad
+  function count(a = b++) {
+    console.log(a);
+  }
+  count();  // 1
+  count();  // 2
+  count(3); // 3
+  count();  // 3
+  ```
+
+
+**[⬆ 返回目录](#table-of-contents)**
+
