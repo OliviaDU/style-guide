@@ -33,10 +33,30 @@
   - 对所有的引用使用 `const` ；不要使用 `var`。
 
   > 这能确保你无法对引用重新赋值，也不会导致出现 bug 或难以理解。
+   ```javascript
+    // bad
+    var a = 1;
+
+    // good
+    const a = 1;
+  ```
 
   -  如果一定需要可变动的引用，使用 `let` 代替 `var`。
 
   > 因为  `let` 是块级作用域，而 `var` 是函数作用域。
+  ```javascript
+    // bad
+    var count = 1;
+    if (true) {
+      count += 1;
+    }
+
+    // good, use the let.
+    let count = 1;
+    if (true) {
+      count += 1;
+    }
+  ```
 
   - 注意 `let` 和 `const` 都是块级作用域。
 
@@ -128,7 +148,7 @@
   <a name="es6-object-shorthand"></a>
   - 使用对象方法的简写。
 
-  ```javascript
+```javascript
   // bad
   const atom = {
     value: 1,
@@ -146,14 +166,14 @@
       return atom.value + value;
     },
   };
-  ```
+```
 
   <a name="es6-object-concise"></a>
   - 使用对象属性值的简写。
 
   > 这样更短更有描述性。
 
-    ```javascript
+  ```javascript
     const lukeSkywalker = 'Luke Skywalker';
 
     // bad
@@ -165,7 +185,7 @@
     const obj = {
       lukeSkywalker,
     };
-    ```
+  ```
 
   - 在对象属性声明前把简写的属性分组。
 
