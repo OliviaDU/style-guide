@@ -1,6 +1,5 @@
 # JavaScript Style Guide
 
-
 <a name="table-of-contents"></a>
 ## 目录
 
@@ -33,9 +32,9 @@
 
   - [1.1](#1.1) <a name='1.1'></a> 对所有的引用使用 `const` ；不要使用 `var`。
 
-  > 为什么？这能确保你无法对引用重新赋值，也不会导致出现 bug 或难以理解。
+  > 这能确保你无法对引用重新赋值，也不会导致出现 bug 或难以理解。
 
-    ```javascript
+   ```javascript
     // bad
     var a = 1;
     var b = 2;
@@ -43,13 +42,13 @@
     // good
     const a = 1;
     const b = 2;
-    ```
+  ```
 
   - [1.2](#1.2) <a name='1.2'></a> 如果你一定需要可变动的引用，使用 `let` 代替 `var`。
 
-  > 为什么？因为  `let` 是块级作用域，而 `var` 是函数作用域。
+  > 因为  `let` 是块级作用域，而 `var` 是函数作用域。
 
-    ```javascript
+  ```javascript
     // bad
     var count = 1;
     if (true) {
@@ -61,11 +60,11 @@
     if (true) {
       count += 1;
     }
-    ```
+  ```
 
   - [1.3](#1.3) <a name='1.3'></a> 注意 `let` 和 `const` 都是块级作用域。
 
-    ```javascript
+  ```javascript
     // const 和 let 只存在于它们被定义的区块内。
     {
       let a = 1;
@@ -73,6 +72,6 @@
     }
     console.log(a); // ReferenceError
     console.log(b); // ReferenceError
-    ```
+  ```
 
 **[⬆ 返回目录](#table-of-contents)**
