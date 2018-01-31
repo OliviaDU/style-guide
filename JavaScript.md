@@ -12,10 +12,9 @@
   1. [箭头函数](#arrow-functions)
   1. [构造函数](#constructors)
   1. [模块](#modules)
-  1. [迭代器和生成器](#iterators-and-generators)
+  1. [迭代器](#iterators-and-generators)
   1. [属性](#properties)
   1. [变量](#variables)
-  1. [提升](#hoisting)
   1. [比较运算符和等号](#comparison-operators--equality)
   1. [代码块](#blocks)
   1. [注释](#comments)
@@ -776,3 +775,482 @@
   ```
 
 **[⬆ 返回目录](#table-of-contents)**
+
+<a name="comparison-operators--equality"></a>
+## 比较运算符和等号
+
+  - 优先使用 `===` 和 `!==` 而不是 `==` 和 `!=`.
+  - 条件表达式例如 `if` 语句通过抽象方法 `ToBoolean` 强制计算它们的表达式时总遵守下面的规则：
+
+    + **对象** 被计算为 **true**
+    + **Undefined** 被计算为 **false**
+    + **Null** 被计算为 **false**
+    + **布尔值** 被计算为 **布尔的值**
+    + **数字** 如果是 **+0、-0、或 NaN** 被计算为 **false**, 否则为 **true**
+    + **字符串** 如果是空字符串 `''` 被计算为 **false**，否则为 **true**
+
+    ```javascript
+    if ([0]) {
+      // true
+      // An array is an object, objects evaluate to true
+    }
+    ```
+
+  - 使用简写。
+
+    ```javascript
+    // bad
+    if (name !== '') {
+      // ...stuff...
+    }
+
+    // good
+    if (name) {
+      // ...stuff...
+    }
+
+    // bad
+    if (collection.length > 0) {
+      // ...stuff...
+    }
+
+    // good
+    if (collection.length) {
+      // ...stuff...
+    }
+    ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="blocks"></a>
+## 代码块
+
+  - 使用大括号包裹所有的多行代码块。
+
+    ```javascript
+    // bad
+    if (test)
+      return false;
+
+    // good
+    if (test) return false;
+
+    // good
+    if (test) {
+      return false;
+    }
+
+    // bad
+    function() { return false; }
+
+    // good
+    function() {
+      return false;
+    }
+    ```
+
+  - 如果通过 `if` 和 `else` 使用多行代码块，把 `else` 放在 `if` 代码块关闭括号的同一行。
+
+    ```javascript
+    // bad
+    if (test) {
+      thing1();
+      thing2();
+    }
+    else {
+      thing3();
+    }
+
+    // good
+    if (test) {
+      thing1();
+      thing2();
+    } else {
+      thing3();
+    }
+    ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="comments"></a>
+## 注释
+
+  - 使用 `/** ... */` 作为多行注释。包含描述、指定所有参数和返回值的类型和值。
+
+    ```javascript
+    // bad
+    // make() returns a new element
+    // based on the passed in tag name
+    //
+    // @param {String} tag
+    // @return {Element} element
+    function make(tag) {
+
+      // ...stuff...
+
+      return element;
+    }
+
+    // good
+    /**
+     * make() returns a new element
+     * based on the passed in tag name
+     *
+     * @param {String} tag
+     * @return {Element} element
+     */
+    function make(tag) {
+
+      // ...stuff...
+
+      return element;
+    }
+    ```
+
+  - 使用 `//` 作为单行注释。在评论对象上面另起一行使用单行注释。在注释前插入空行。
+
+    ```javascript
+    // bad
+    const active = true;  // is current tab
+
+    // good
+    // is current tab
+    const active = true;
+
+    // bad
+    function getType() {
+      console.log('fetching type...');
+      // set the default type to 'no type'
+      const type = this._type || 'no type';
+
+      return type;
+    }
+
+    // good
+    function getType() {
+      console.log('fetching type...');
+
+      // set the default type to 'no type'
+      const type = this._type || 'no type';
+
+      return type;
+    }
+    ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="whitespace"></a>
+## 空白
+
+  - 使用 2 个空格作为缩进。
+
+    ```javascript
+    // bad
+    function() {
+    ∙∙∙∙const name;
+    }
+
+    // bad
+    function() {
+    ∙const name;
+    }
+
+    // good
+    function() {
+    ∙∙const name;
+    }
+    ```
+
+  - 在花括号前放一个空格。
+
+    ```javascript
+    // bad
+    function test(){
+      console.log('test');
+    }
+
+    // good
+    function test() {
+      console.log('test');
+    }
+
+    // bad
+    dog.set('attr',{
+      age: '1 year',
+      breed: 'Bernese Mountain Dog',
+    });
+
+    // good
+    dog.set('attr', {
+      age: '1 year',
+      breed: 'Bernese Mountain Dog',
+    });
+    ```
+
+  - 在控制语句（`if`、`while` 等）的小括号前放一个空格。在函数调用及声明中，不在函数的参数列表前加空格。
+
+    ```javascript
+    // bad
+    if(isJedi) {
+      fight ();
+    }
+
+    // good
+    if (isJedi) {
+      fight();
+    }
+
+    // bad
+    function fight () {
+      console.log ('Swooosh!');
+    }
+
+    // good
+    function fight() {
+      console.log('Swooosh!');
+    }
+    ```
+
+  - 使用空格把运算符隔开。
+
+    ```javascript
+    // bad
+    const x=y+5;
+
+    // good
+    const x = y + 5;
+    ```
+
+  - 在文件末尾插入一个空行。
+
+    ```javascript
+    // bad
+    (function(global) {
+      // ...stuff...
+    })(this);
+    ```
+
+    ```javascript
+    // bad
+    (function(global) {
+      // ...stuff...
+    })(this);↵
+    ↵
+    ```
+
+    ```javascript
+    // good
+    (function(global) {
+      // ...stuff...
+    })(this);↵
+    ```
+
+  - 在使用长方法链时进行缩进。使用前面的点 `.` 强调这是方法调用而不是新语句。
+
+    ```javascript
+    // bad
+    $('#items').find('.selected').highlight().end().find('.open').updateCount();
+
+    // bad
+    $('#items').
+      find('.selected').
+        highlight().
+        end().
+      find('.open').
+        updateCount();
+
+    // good
+    $('#items')
+      .find('.selected')
+      .highlight()
+      .end()
+      .find('.open')
+      .updateCount();
+
+    // bad
+    const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').class('led', true)
+        .attr('width', (radius + margin) * 2).append('svg:g')
+        .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
+        .call(tron.led);
+
+    // good
+    const leds = stage.selectAll('.led')
+      .data(data)
+      .enter()
+      .append('svg:svg')
+      .classed('led', true)
+      .attr('width', (radius + margin) * 2)
+      .append('svg:g')
+      .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
+      .call(tron.led);
+    ```
+
+  - 在块末和新语句前插入空行。
+
+    ```javascript
+    // bad
+    if (foo) {
+      return bar;
+    }
+    return baz;
+
+    // good
+    if (foo) {
+      return bar;
+    }
+
+    return baz;
+
+    // bad
+    const obj = {
+      foo() {
+      },
+      bar() {
+      },
+    };
+    return obj;
+
+    // good
+    const obj = {
+      foo() {
+      },
+
+      bar() {
+      },
+    };
+
+    return obj;
+    ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="commas"></a>
+## 逗号
+
+  - 增加结尾的逗号: **需要**。
+
+  > 这会让 git diffs 更干净。另外，像 babel 这样的转译器会移除结尾多余的逗号，也就是说你不必担心老旧浏览器的[尾逗号问题](es5/README.md#commas)。
+
+  ```javascript
+  // bad - git diff without trailing comma
+  const hero = {
+        firstName: 'Florence',
+  -    lastName: 'Nightingale'
+  +    lastName: 'Nightingale',
+  +    inventorOf: ['coxcomb graph', 'modern nursing']
+  }
+
+  // good - git diff with trailing comma
+  const hero = {
+        firstName: 'Florence',
+        lastName: 'Nightingale',
+  +    inventorOf: ['coxcomb chart', 'modern nursing'],
+  }
+
+  ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="semicolons"></a>
+## 分号
+
+  - **使用分号**
+
+    ```javascript
+    // bad
+    (function() {
+      const name = 'Skywalker'
+      return name
+    })()
+
+    // good
+    (() => {
+      const name = 'Skywalker';
+      return name;
+    })();
+
+    // good (防止函数在两个 IIFE 合并时被当成一个参数)
+    ;(() => {
+      const name = 'Skywalker';
+      return name;
+    })();
+    ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
+<a name="type-casting--coercion"></a>
+## 类型转换
+
+  - 在语句开始时执行类型转换。
+  - String:
+
+    ```javascript
+    //  => this.reviewScore = 9;
+
+    // bad
+    const totalScore = this.reviewScore + '';
+
+    // good
+    const totalScore = String(this.reviewScore);
+    ```
+
+  - Number，使用 `parseInt` 转换，并带上类型转换的基数。
+
+    ```javascript
+    const inputValue = '4';
+
+    // bad
+    const val = new Number(inputValue);
+
+    // bad
+    const val = +inputValue;
+
+    // bad
+    const val = inputValue >> 0;
+
+    // bad
+    const val = parseInt(inputValue);
+
+    // good
+    const val = Number(inputValue);
+
+    // good
+    const val = parseInt(inputValue, 10);
+    ```
+
+  - 如果因为某些原因 parseInt 成为你所做的事的瓶颈而需要使用位操作解决[性能问题](http://jsperf.com/coercion-vs-casting/3)时，留个注释说清楚原因和你的目的。
+
+    ```javascript
+    // good
+    /**
+     * 使用 parseInt 导致我的程序变慢，
+     * 改成使用位操作转换数字快多了。
+     */
+    const val = inputValue >> 0;
+    ```
+
+  - 小心使用位操作运算符。数字会被当成 [64 位值](http://es5.github.io/#x4.3.19)，但是位操作运算符总是返回 32 位的整数（[参考](http://es5.github.io/#x11.7)）。位操作处理大于 32 位的整数值时还会导致意料之外的行为。[关于这个问题的讨论](https://github.com/airbnb/javascript/issues/109)。最大的 32 位整数是 2,147,483,647：
+
+    ```javascript
+    2147483647 >> 0 //=> 2147483647
+    2147483648 >> 0 //=> -2147483648
+    2147483649 >> 0 //=> -2147483647
+    ```
+
+  - Boolean:
+
+    ```javascript
+    const age = 0;
+
+    // bad
+    const hasAge = new Boolean(age);
+
+    // good
+    const hasAge = Boolean(age);
+
+    // good
+    const hasAge = !!age;
+    ```
+
+**[⬆ 返回目录](#table-of-contents)**
+
