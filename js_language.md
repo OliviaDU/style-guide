@@ -1,4 +1,4 @@
-# JavaScript Style Guide
+# JavaScript 语言规范
 
 <a name="table-of-contents"></a>
 ## 目录
