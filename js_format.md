@@ -6,6 +6,7 @@
   1. [命名规则](#naming-conventions)
   1. [逗号](#commas)
   1. [分号](#semicolons)
+  1. [引号](#quotes)
   1. [空格](#whitespace)
   1. [代码块](#blocks)
   1. [注释](#comments)
@@ -212,27 +213,33 @@
 
 **[⬆ 返回目录](#table-of-contents)**
 
+<a name="quotes"></a>
+## 引号
+
+  - 使用双引号。
+
+
 <a name="whitespace"></a>
 ## 空格
 
-  - 使用 2 个空格作为缩进。
+  - 用空格而不是tab进行缩进，使用 2 个空格作为缩进。
 
-  ```javascript
-  // bad
-  function() {
-  ∙∙∙∙const name;
-  }
+    ```javascript
+    // bad
+    function() {
+    ∙∙∙∙const name;
+    }
 
-  // bad
-  function() {
-  ∙const name;
-  }
+    // bad
+    function() {
+    ∙const name;
+    }
 
-  // good
-  function() {
-  ∙∙const name;
-  }
-  ```
+    // good
+    function() {
+    ∙∙const name;
+    }
+    ```
 
 - 在花括号前放一个空格。
 
@@ -294,7 +301,7 @@
   const x = y + 5;
   ```
 
-- 在对象的计算属性内，禁止使用空格。
+- 在对象的计算属性内，禁止使用空格。冒号后需要插入一个空格。
 
   ```javascript
   //bad
@@ -304,6 +311,35 @@
 
   //good
   obj['foo']
+
+  {
+    foo: 1,
+    bar: 2,
+    baz: 3
+  }
+  ```
+
+- 条件表达式 if/while/switch 后插入一个空格。
+
+  ```javascript
+  if (true) {
+    //...
+  }
+
+  while (true) {
+    //...
+  }
+
+  switch (v) {
+    //...
+  }
+  ```
+- 函数参数括号前后不需要空格，逗号后需插入一个空格。
+
+  ```javascript
+  function fn(arg1, arg2) {
+    \\todo:...
+  }
   ```
 
 - 在文件末尾插入一个空行。
