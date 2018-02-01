@@ -204,6 +204,18 @@
   };
   ```
 
+  - 所有的for-in循环都必须使用hasOwnProperty()。
+
+  > 因为for-in循环会遍历对象本身的所有可枚举属性，以及对象从其构造函数原型中继承的属性。
+  ```javascript
+  for (let prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      //...
+    }
+  }
+  ```
+
+
 **[⬆ 返回目录](#table-of-contents)**
 
 
@@ -315,14 +327,15 @@
 <a name="strings"></a>
 ## 字符串
 
-  - 字符串使用单引号 `''` 。
+  - 字符串使用双引号 `" "` 。
 
     ```javascript
     // bad
-    const name = "Capt. Janeway";
+    const name = 'Capt. Janeway';
 
     // good
-    const name = 'Capt. Janeway';
+    const name = "Capt. Janeway";
+
     ```
 
   - 字符串超过 80 个字节应该使用字符串连接号换行。
